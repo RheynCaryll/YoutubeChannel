@@ -1,0 +1,35 @@
+package com.example.root.youtubechannel;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import com.google.android.youtube.player.YouTubeIntents;
+
+/**
+ * Created by root on 8/17/15.
+ */
+public class UploadVideo extends Activity{
+
+    private static final int SELECTED_VIDEO = 2;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //Select the videos
+        Intent intent = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, SELECTED_VIDEO);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SELECTED_VIDEO && resultCode == RESULT_OK && data != null){
+            Toast.makeText(getApplicationContext(), "IMAGE PICKED", Toast.LENGTH_LONG).show();
+            Intent intent = YouTubeIntents.createUploadIntent(this, data.getData());
+            startActivity(intent);
+        }
+    }
+
+}
